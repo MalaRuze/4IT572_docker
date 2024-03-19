@@ -1,4 +1,4 @@
-import { ICartProduct } from 'models';
+import { ICartProduct } from 'src/models';
 import CartProduct from './CartProduct';
 
 import * as S from './style';

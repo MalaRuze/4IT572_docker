@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IGetProductsResponse } from 'models';
+import { IGetProductsResponse } from 'src/models';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -11,7 +11,7 @@ export const getProducts = async () => {
       'https://react-shopping-cart-67954.firebaseio.com/products.json'
     );
   } else {
-    response = require('static/json/products.json');
+    response = require('src/static/json/products.json');
   }
 
   const { products } = response.data || [];
