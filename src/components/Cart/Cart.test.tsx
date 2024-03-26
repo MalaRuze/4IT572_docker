@@ -1,7 +1,7 @@
-import { renderWithThemeProvider } from 'src/utils/test/test-utils';
-import { CartProvider } from 'src/contexts/cart-context';
+import { renderWithThemeProvider } from 'utils/test/test-utils';
+import { CartProvider } from 'contexts/cart-context';
 
-import Cart from './index';
+import Cart from '.';
 
 describe('[components] - Cart', () => {
   const setup = () => {
