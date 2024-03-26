@@ -56,6 +56,19 @@ jobs:
           npm rebuild node-sass --force
           npm run build -- --colors
 
+      - name: Cache node modules and build folder
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/cache@v4.0.2
+        with:
+          path: |
+            ~/.npm
+            ./node_modules
+            ./build
+          key: ${{ runner.os }}-build-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ github.run_id }}
+
+
   Test:
     needs: Install
     runs-on: ubuntu-latest
@@ -80,3 +93,30 @@ jobs:
       - name: Run tests
         run: |
           npm run test -- --u
+
+  Deploy:
+    needs: [Build, Test]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Load Node modules and build folder
+        uses: actions/cache@v4.0.2
+        with:
+          path: |
+            ~/.npm
+            ./node_modules
+            ./build
+          key: ${{ runner.os }}-build-${{ github.run_id }}
+
+      - name: Deploy to Firebase
+        uses: lowply/deploy-firebase@v0.0.5
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_PROJECT: devops-course-4ee0f
+
+
